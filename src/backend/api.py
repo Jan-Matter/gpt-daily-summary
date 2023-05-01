@@ -20,7 +20,7 @@ app = Quart(__name__)
 slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
 cashkurs_connector = CashkursArticlesController()
 gpt_controller = GPTChatController()
-articles = {article["title"] for article in cashkurs_connector.get_articles()}
+articles = {article["title"]: article for article in cashkurs_connector.get_articles()}
 
 
 
