@@ -34,6 +34,7 @@ async def cashkurs():
             event_ts = body["event"]["event_ts"]
             for message in messages:
                 if message.get("latest_reply") == event_ts:
+                    print(message)
                     thread_ts = message.get("blocks")[0].get("elements")[0].get("thread_ts")
                     print(thread_ts)
                     original_title = message.get("blocks")[0].get("elements")[0].get("elements")[0].get("text")
