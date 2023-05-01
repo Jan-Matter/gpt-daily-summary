@@ -54,7 +54,7 @@ async def cashkurs():
                         
                     try:
                         gpt_controller.init_chat(original_title)
-                        await gpt_controller.send_message(original_title, f"I want to learn more about the text: {original_text}")
+                        await gpt_controller.send_message(original_title, f"I want to learn more about the text: {original_text[:3500]}")
                     except Exception as e:
                         print(f"gpt controller could not be inted {e}")
                     response = await gpt_controller.send_message(original_title, question)
