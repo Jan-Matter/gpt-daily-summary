@@ -21,6 +21,7 @@ slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
 cashkurs_connector = CashkursArticlesController()
 gpt_controller = GPTChatController()
 articles = {article["title"]: article for article in cashkurs_connector.get_articles()}
+print(articles.keys())
 
 
 
@@ -28,18 +29,15 @@ articles = {article["title"]: article for article in cashkurs_connector.get_arti
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
+        print(body)
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
-            print(question)
             event_ts = body["event"]["event_ts"]
             for message in messages:
                 if message.get("latest_reply") == event_ts:
-                    print(message)
                     thread_ts = message.get("thread_ts")
-                    print(thread_ts)
                     original_title = message.get("blocks")[0].get("elements")[0].get("elements")[0].get("text")
-                    print(original_title)
                     for title, article in articles.items():
                         #check if strings match roughly
                         if len(title) > 10 and title[2:10] in original_title:
