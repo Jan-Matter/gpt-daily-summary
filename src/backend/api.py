@@ -24,9 +24,9 @@ cashkurs_connector = CashkursArticlesController()
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
+        print(body)
         messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
         text = body["text"]
-        print(body)
         output = [message for message in messages if message["latest_reply"] == body["event_ts"]]
         print(output)
         if "challenge" in body:
