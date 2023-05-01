@@ -25,13 +25,16 @@ async def cashkurs():
     if request.method == "POST":
         body = await request.json
         print(body)
-        messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
-        text = body["text"]
-        output = [message for message in messages if message["latest_reply"] == body["event_ts"]]
-        print(output)
-        if "challenge" in body:
-            return {"challenge": body["challenge"]}
-        return {"message": "Hello world!"}
+        try:
+            messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
+            text = body["text"]
+            output = [message for message in messages if message["latest_reply"] == body["event_ts"]]
+            print(output)
+            if "challenge" in body:
+                return {"challenge": body["challenge"]}
+            return {"message": "Hello world!"}
+        except Exception as e:
+            return {"message": "Hello world!"}
     elif request.method == "GET":
         return {"message": "Hello world!"}
     
