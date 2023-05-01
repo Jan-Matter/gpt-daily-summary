@@ -1,4 +1,5 @@
 from slack_sdk import WebClient
+from slackeventsapi import SlackEventAdapter
 from dotenv import load_dotenv, find_dotenv
 import os
 
@@ -8,6 +9,7 @@ class SlackConnector:
 
     def __init__(self, token):
         self.__slack_client = WebClient(token=token)
+        self.__slack_event_adapter = SlackEventAdapter(os.environ["SLACK_SIGNING_SECRET"], "/slack/events")
     
     def send_message(self, channel_id, message):
         api_response = self.__slack_client.chat_postMessage(

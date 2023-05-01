@@ -11,11 +11,13 @@ load_dotenv(find_dotenv())
 
 app = Quart(__name__)
 
-@app.route("/api/cashkurs/", methods=["GET", "POST"])
+@app.route("/api/cashkurs", methods=["GET", "POST"])
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
         print(body)
+        if "challenge" in body:
+            return {"challenge": body["challenge"]}
         return {"message": "Hello world!"}
     elif request.method == "GET":
         return {"message": "Hello world!"}
