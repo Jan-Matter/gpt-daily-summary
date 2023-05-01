@@ -21,7 +21,6 @@ slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
 cashkurs_controller= CashkursArticlesController()
 gpt_controller = GPTChatController()
 list_articles = cashkurs_controller.get_articles()
-print(list_articles)
 articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
 bot_id = "U055J9C6D1T"
 print(articles.keys())
