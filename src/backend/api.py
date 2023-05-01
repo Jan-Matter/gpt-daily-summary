@@ -39,7 +39,7 @@ async def cashkurs():
             event_ts = body["event"]["event_ts"]
 
             
-            if body["event"]["user_id"] == bot_id:
+            if body["event"]["user"] == bot_id:
                 return {"message": "bot_message"}
             
             for message in messages:
