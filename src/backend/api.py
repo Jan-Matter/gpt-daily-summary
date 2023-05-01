@@ -54,7 +54,7 @@ async def cashkurs():
                         
                     try:
                         await gpt_controller.init_chat(original_title)
-                        await gpt_controller.send_message(original_title, original_text)
+                        print("first response: ", await gpt_controller.send_message(original_title, f"I want to learn more about the text: {original_text}"))
                     except:
                         pass
                     response = await gpt_controller.send_message(original_title, question)
