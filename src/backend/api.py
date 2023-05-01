@@ -35,6 +35,7 @@ async def cashkurs():
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
+            print(question)
             event_ts = body["event"]["event_ts"]
 
             if datetime.now() - last_response_time < 3:
