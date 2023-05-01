@@ -23,7 +23,6 @@ gpt_controller = GPTChatController()
 list_articles = cashkurs_controller.get_articles()
 articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
 bot_id = "U055J9C6D1T"
-print(articles.keys())
 
 
 
@@ -48,7 +47,6 @@ async def cashkurs():
                         if len(title) > 10 and title[2:10] in original_title:
                             original_text = article["text"]
                             break
-                    print(original_text)
                         
                     try:
                         await gpt_controller.init_chat(original_title)
@@ -56,7 +54,6 @@ async def cashkurs():
                     except:
                         pass
                     response = await gpt_controller.send_message(original_title, question)
-                    print(response)
                     slack_connector.send_message(os.environ["SLACK_CASHKURS_CHANNEL_ID"], response, thread_ts)
             return {"message": "Success"}
         except Exception as e:
