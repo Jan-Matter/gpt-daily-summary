@@ -20,13 +20,12 @@ if __name__ == '__main__':
     articles = cashkurs_articles_controller.get_articles()
     for article in articles:
         if article["date"] == date.today().strftime('%Y-%m-%d'):
-            pass
-        message = f"""
-            *{article["title"]}*
+            message = f"""
+                *{article["title"]}*
 
-{article["summary"]}
+    {article["summary"]}
 
-Full article: {article["link"]}
-        """
-        slack_connector.send_message(cashkurs_channel_id, message)
+    Full article: {article["link"]}
+            """
+            slack_connector.send_message(cashkurs_channel_id, message)
 

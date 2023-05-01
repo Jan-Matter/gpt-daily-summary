@@ -1,7 +1,12 @@
 from quart import Quart, request
+from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
-import hmac
+import sys
 import os
+
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from src.backend.Controllers.CashkursArticlesController import CashkursArticlesController
+from src.backend.Connectors.SlackConnector import SlackConnector
 
 load_dotenv(find_dotenv())
 
@@ -11,12 +16,19 @@ load_dotenv(find_dotenv())
 
 app = Quart(__name__)
 
+slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
+cashkurs_connector = CashkursArticlesController()
+
+
 @app.route("/api/cashkurs", methods=["GET", "POST"])
 async def cashkurs():
     if request.method == "POST":
-        print("called")
         body = await request.json
+        messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
+        text = body["text"]
         print(body)
+        output = [message for message in messages if message["latest_reply"] == body["event_ts"]]
+        print(output)
         if "challenge" in body:
             return {"challenge": body["challenge"]}
         return {"message": "Hello world!"}
