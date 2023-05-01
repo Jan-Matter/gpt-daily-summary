@@ -18,9 +18,12 @@ load_dotenv(find_dotenv())
 app = Quart(__name__)
 
 slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
-cashkurs_connector = CashkursArticlesController()
+cashkurs_controller= CashkursArticlesController()
 gpt_controller = GPTChatController()
-articles = {article["title"]: article for article in cashkurs_connector.get_articles()}
+list_articles = cashkurs_controller.get_articles()
+print(list_articles)
+articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
+bot_id = "U055J9C6D1T"
 print(articles.keys())
 
 
@@ -34,6 +37,9 @@ async def cashkurs():
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
             event_ts = body["event"]["event_ts"]
+            if body["event"].get("user") == bot_id:
+                return {"message": "Bot message"}
+            
             for message in messages:
                 if message.get("latest_reply") == event_ts:
                     thread_ts = message.get("thread_ts")
