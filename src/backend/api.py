@@ -24,7 +24,6 @@ gpt_controller = GPTChatController()
 list_articles = cashkurs_controller.get_articles()
 articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
 bot_id = "U055J9C6D1T"
-last_response_time = datetime.now()
 
  
 
@@ -32,16 +31,16 @@ last_response_time = datetime.now()
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
+        print(body)
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
             print(question)
             event_ts = body["event"]["event_ts"]
 
-            if datetime.now() - last_response_time < 3:
-                print("bot answer")
-                return {"message": "from bot"}
-            last_response_time = datetime.now()
+            
+            if body["event"]["user_id"] == bot_id:
+                return {"message": "bot_message"}
             
             for message in messages:
                 if message.get("latest_reply") == event_ts:
