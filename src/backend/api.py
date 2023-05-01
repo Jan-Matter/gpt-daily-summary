@@ -62,6 +62,7 @@ async def cashkurs():
                     slack_connector.send_message(os.environ["SLACK_CASHKURS_CHANNEL_ID"], response, thread_ts)
             return {"message": "Success"}
         except Exception as e:
+            print(e)
             return {"message": f"Failed: {e}"}
     elif request.method == "GET":
         return {"message": "Hello world!"}
