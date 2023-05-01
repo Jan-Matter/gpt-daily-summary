@@ -53,8 +53,7 @@ async def cashkurs():
                             break
                         
                     try:
-                        await gpt_controller.init_chat(original_title)
-                        print("here")
+                        gpt_controller.init_chat(original_title)
                         await gpt_controller.send_message(original_title, f"I want to learn more about the text: {original_text}")
                     except Exception as e:
                         print(f"gpt controller could not be inted {e}")
