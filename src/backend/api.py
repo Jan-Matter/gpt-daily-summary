@@ -26,7 +26,7 @@ articles = {article["title"]: article for article in cashkurs_controller.get_art
 bot_id = "U055J9C6D1T"
 last_response_time = datetime.now()
 
-
+ 
 
 @app.route("/api/cashkurs", methods=["GET", "POST"])
 async def cashkurs():
