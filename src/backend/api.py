@@ -37,7 +37,7 @@ async def cashkurs():
             question = body["event"]["text"]
             event_ts = body["event"]["event_ts"]
 
-            if last_response_time - datetime.now() < 3:
+            if datetime.now() - last_response_time < 3:
                 return {"message": "from bot"}
             last_response_time = datetime.now()
             
