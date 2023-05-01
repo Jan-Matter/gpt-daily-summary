@@ -1,7 +1,7 @@
 from quart import Quart, request
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
-import datetime
+from datetime import datetime
 import sys
 import os
 
