@@ -1,6 +1,7 @@
 from quart import Quart, request
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
+import time
 import sys
 import os
 
@@ -23,6 +24,7 @@ gpt_controller = GPTChatController()
 list_articles = cashkurs_controller.get_articles()
 articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
 bot_id = "U055J9C6D1T"
+last_response_time = time.now()
 
 
 
@@ -30,13 +32,14 @@ bot_id = "U055J9C6D1T"
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
-        print(body)
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
             event_ts = body["event"]["event_ts"]
-            if body["event"].get("user") == bot_id:
-                return {"message": "Bot message"}
+
+            if last_response_time - time.now() < 3:
+                return {"message": "from bot"}
+            
             
             for message in messages:
                 if message.get("latest_reply") == event_ts:
