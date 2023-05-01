@@ -40,9 +40,9 @@ async def cashkurs():
                     print(thread_ts)
                     original_title = message.get("blocks")[0].get("elements")[0].get("elements")[0].get("text")
                     print(original_title)
-                    for title, article in articles:
-                        #check if strings match roughly (levenshtein distance)
-                        if title[2:10] in original_title:
+                    for title, article in articles.items():
+                        #check if strings match roughly
+                        if len(title) > 10 and title[2:10] in original_title:
                             original_text = article["text"]
                             break
                     print(original_text)
