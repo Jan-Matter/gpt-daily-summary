@@ -55,7 +55,7 @@ async def cashkurs():
                     try:
                         await gpt_controller.init_chat(original_title)
                         print("first response: ", await gpt_controller.send_message(original_title, f"I want to learn more about the text: {original_text}"))
-                    except e:
+                    except Exception as e:
                         print(f"pgt controller could not be inted {e}")
                     response = await gpt_controller.send_message(original_title, question)
                     slack_connector.send_message(os.environ["SLACK_CASHKURS_CHANNEL_ID"], response, thread_ts)
