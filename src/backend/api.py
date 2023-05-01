@@ -28,7 +28,6 @@ articles = {article["title"] for article in cashkurs_connector.get_articles()}
 async def cashkurs():
     if request.method == "POST":
         body = await request.json
-        print(body)
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             question = body["event"]["text"]
@@ -36,7 +35,9 @@ async def cashkurs():
             for message in messages:
                 if message.get("latest_reply") == event_ts:
                     thread_ts = message.get("blocks")[0].get("elements")[0].get("thread_ts")
+                    print(thread_ts)
                     original_title = message.get("blocks")[0].get("elements")[0].get("elements")[0].get("text")
+                    print(original_title)
                     original_text = articles.get(original_title, {}).get("text")
                     try:
                         await gpt_controller.init_chat(original_title)
@@ -44,6 +45,7 @@ async def cashkurs():
                     except:
                         pass
                     response = await gpt_controller.send_message(original_title, question)
+                    print(response)
                     slack_connector.send_message(os.environ["SLACK_CASHKURS_CHANNEL_ID"], response, thread_ts)
             return {"message": "Success"}
         except Exception as e:
