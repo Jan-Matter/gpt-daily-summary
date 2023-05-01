@@ -1,0 +1,8 @@
+python-dotenv
+beautifulsoup4
+pyppeteer
+openai
+aiohttp
+slack_sdk
+quart
+hypercorn
