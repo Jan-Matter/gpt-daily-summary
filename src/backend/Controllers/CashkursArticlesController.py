@@ -33,8 +33,8 @@ async def main():
     await controller.refresh_articles()
 
 if __name__ == '__main__':
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(main())
-    #controller = CashkursArticlesController()
-    #articles = controller.get_articles()
-    #print(articles)
+    #loop = asyncio.new_event_loop()
+    #loop.run_until_complete(main())
+    controller = CashkursArticlesController()
+    articles = controller.get_articles()
+    print(articles)

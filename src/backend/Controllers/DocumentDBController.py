@@ -1,5 +1,10 @@
 import json
 import glob
+import os
+from pathlib import Path
+
+temp_dodument_path = Path(__file__).parent.parent / 'temp_document_db'
+
 class DocumentDBController:
     
     def __init__(self):
@@ -7,18 +12,19 @@ class DocumentDBController:
 
     def get_collection_documents(self, collection):
         documents = []
-        document_paths = glob.glob(f"src/backend/temp_document_db/{collection}*.json")
+        path = str(temp_dodument_path / "{collection}*.json")
+        document_paths = glob.glob(str(temp_dodument_path / f"{collection}*.json"))
         for path in document_paths:
             with open(path, 'r') as json_doc:
                 documents.append(json.load(json_doc))
         return documents
 
     def get_document(self, collection, id):
-        with open(f'src/backend/temp_document_db/{collection}_{id}.json', 'r') as json_doc:
+        with open(str(temp_dodument_path / f'{collection}_{id}.json'), 'r') as json_doc:
             return json.load(json_doc)
     
     def store_document(self, collection, id, document):
-        with open(f'src/backend/temp_document_db/{collection}_{id}.json', 'w') as json_doc:
+        with open( str(temp_dodument_path / f'{collection}_{id}.json'), 'w') as json_doc:
             json.dump(document, json_doc)
 
 if __name__ == '__main__':
