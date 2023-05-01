@@ -1,7 +1,7 @@
 from quart import Quart, request
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
-import time
+import datetime
 import sys
 import os
 
@@ -24,7 +24,7 @@ gpt_controller = GPTChatController()
 list_articles = cashkurs_controller.get_articles()
 articles = {article["title"]: article for article in cashkurs_controller.get_articles()}
 bot_id = "U055J9C6D1T"
-last_response_time = time.now()
+last_response_time = datetime.now()
 
 
 
@@ -37,7 +37,7 @@ async def cashkurs():
             question = body["event"]["text"]
             event_ts = body["event"]["event_ts"]
 
-            if last_response_time - time.now() < 3:
+            if last_response_time - datetime.now() < 3:
                 return {"message": "from bot"}
             
             
