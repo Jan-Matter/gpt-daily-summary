@@ -16,7 +16,7 @@ async def cashkurs():
     if request.method == "POST":
         body = await request.json
         print(body)
-        return {"challenge": body["challenge"]}
+        return {"message": "Hello world!"}
     elif request.method == "GET":
         return {"message": "Hello world!"}
     
