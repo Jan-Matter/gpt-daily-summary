@@ -28,9 +28,8 @@ async def cashkurs():
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
             text = body["event"]["text"]
-            print(text)
-            print(body["event"]["event_ts"])
-            output = [message for message in messages if message["latest_reply"] == body["event"]["event_ts"]]
+            event_ts = body["event"]["event_ts"]
+            output = [message for message in messages if message.get("latest_reply") == body["event"]["event_ts"]]
             print(output)
             if "challenge" in body:
                 return {"challenge": body["challenge"]}
