@@ -9,9 +9,10 @@ class SlackConnector:
     def __init__(self, token):
         self.__slack_client = WebClient(token=token)
     
-    def send_message(self, channel_id, message):
+    def send_message(self, channel_id, message, thread_ts=None):
         api_response = self.__slack_client.chat_postMessage(
         channel= channel_id,
+        thread_ts=thread_ts,
         text=message
         )
         return api_response

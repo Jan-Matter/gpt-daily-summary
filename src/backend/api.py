@@ -7,6 +7,7 @@ import os
 sys.path.append(str(Path(__file__).parent.parent.parent))
 from src.backend.Controllers.CashkursArticlesController import CashkursArticlesController
 from src.backend.Connectors.SlackConnector import SlackConnector
+from src.backend.Controllers.GPTChatController import GPTChatController
 
 load_dotenv(find_dotenv())
 
@@ -18,6 +19,9 @@ app = Quart(__name__)
 
 slack_connector = SlackConnector(os.environ["SLACK_BOT_TOKEN"])
 cashkurs_connector = CashkursArticlesController()
+gpt_controller = GPTChatController()
+articles = {article["title"] for article in cashkurs_connector.get_articles()}
+
 
 
 @app.route("/api/cashkurs", methods=["GET", "POST"])
@@ -27,15 +31,23 @@ async def cashkurs():
         print(body)
         try:
             messages = slack_connector.get_messages(os.environ["SLACK_CASHKURS_CHANNEL_ID"])
-            text = body["event"]["text"]
+            question = body["event"]["text"]
             event_ts = body["event"]["event_ts"]
-            output = [message for message in messages if message.get("latest_reply") == body["event"]["event_ts"]]
-            print(output)
-            if "challenge" in body:
-                return {"challenge": body["challenge"]}
-            return {"message": "Hello world!"}
+            for message in messages:
+                if message.get("latest_reply") == event_ts:
+                    thread_ts = message.get("blocks")[0].get("elements")[0].get("thread_ts")
+                    original_title = message.get("blocks")[0].get("elements")[0].get("elements")[0].get("text")
+                    original_text = articles.get(original_title, {}).get("text")
+                    try:
+                        await gpt_controller.init_chat(original_title)
+                        await gpt_controller.send_message(original_title, original_text)
+                    except:
+                        pass
+                    response = await gpt_controller.send_message(original_title, question)
+                    slack_connector.send_message(os.environ["SLACK_CASHKURS_CHANNEL_ID"], response, thread_ts)
+            return {"message": "Success"}
         except Exception as e:
-            return {"message": "Hello world!"}
+            return {"message": f"Failed: {e}"}
     elif request.method == "GET":
         return {"message": "Hello world!"}
     

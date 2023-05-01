@@ -24,7 +24,7 @@ class DocumentDBController:
 if __name__ == '__main__':
     controller = DocumentDBController()
     test = {"hello": True}
-    controller.store_document('articles', '5f5e5f3c5e5f5f5f5f5f5f5f', test)
-    controller.store_document('articles', '5f5e5f3c5e5f5f5f5fkeilai', test)
-    docs = controller.get_collection_documents('articles')
+    #controller.store_document('articles', '5f5e5f3c5e5f5f5f5f5f5f5f', test)
+    #controller.store_document('articles', '5f5e5f3c5e5f5f5f5fkeilai', test)
+    docs = controller.get_collection_documents('cashkurs_articles')
     print(docs)
