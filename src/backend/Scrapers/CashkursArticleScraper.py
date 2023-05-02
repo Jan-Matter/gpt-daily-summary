@@ -29,7 +29,7 @@ class CashkursArticleScraper(BaseArticleScraper):
         return self.__new_articles
 
     async def init_page(self):
-        self.__page = await (await launch(headless=True, args=['--no-sandbox', '--disable-extensions'])).newPage() # defaultViewport={'width': 1000, 'height': 800},
+        self.__page = await (await launch(headless=True, args=['--no-sandbox', '--start-maximized', '--disable-extensions', '--disable-setuid-sandbox', '--disable-dev-shm-usage'])).newPage() # defaultViewport={'width': 1000, 'height': 800},
         self.__page.setDefaultNavigationTimeout(100000)
         await self.__page.goto("https://www.cashkurs.com/login")
         await self.__login()
